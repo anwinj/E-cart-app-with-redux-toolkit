@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Badge from 'react-bootstrap/Badge';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { productSearch } from '../Redux/Slices/productSlice';
 
-function Header() {
+function Header({insideHome}) {
 
     const [wishlistCount,setWishlistCount] = useState(0)
     const [cartCount,setCartCount] = useState(0)
     const wishlist = useSelector(state=>state.wishlistSlice.wishlist)
     const cart = useSelector(state => state.cartReducer)
+    const dispatch = useDispatch()
 
     useEffect(()=>{
         setWishlistCount(wishlist?.length)
@@ -23,6 +25,12 @@ function Header() {
             </div>
 
             <div className="buttons me-5 d-flex justify-content-evenly align-items-center ">
+                {
+                    insideHome&&<div className='me-lg-5'>
+                        <input onChange={e=>dispatch(productSearch(e.target.value.toLowerCase()))}  type="text"className='form-control' placeholder='Search products..!!!' />
+                    </div>
+                }
+                
                 <div className="btn btn-secondary me-4 d-flex justify-content-center align-items-center ">
                    <Link to={'/wishlist'} style={{textDecoration:'none'}} className='d-flex justify-content-center align-items-center text-light'>
                        <i class="fa-solid fa-heart fa-lg text-danger"></i>

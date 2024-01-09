@@ -3,17 +3,24 @@ import {Row,Col,Button,Card,Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { removeFromWishlist } from '../Redux/Slices/wishlistSlice'
+import { addtoCart } from '../Redux/Slices/cartSlice'
+import Header from '../Components/Header'
 
 function Wishlist() {
 
     const wishlist = useSelector(state=>state.wishlistSlice.wishlist)
     const dispatch = useDispatch()
 
+    const handleCart = (product) =>{
+      dispatch(removeFromWishlist(product.id))
+      dispatch(addtoCart(product))
+    }
+
   return (
     <>
-        
+        <Header/>
         <Row className='mt-5 container'>
-                    <h3 className='mb-4 text-danger'>Wishlist</h3>
+                    <h3 className='mb-4 ms-5 text-danger'>Wishlist</h3>
                     {
                         wishlist?.length>0?wishlist.map((product)=>(
                             <Col className='mb-5' sm={12} md={6} lg={4} xl={3}>
@@ -25,7 +32,7 @@ function Wishlist() {
                                 <Card.Title className='d-flex justify-content-center '>{product.title}</Card.Title>
                                  <div className='d-flex justify-content-between mt-4'>  
                                     <Button onClick={()=>dispatch(removeFromWishlist(product.id))} className='btn me-3 btn-light'><i class="fa-solid fa-heart-circle-xmark text-danger"></i></Button>
-                                    <Button className='btn btn-light'><i class="fa-solid fa-cart-shopping fa-lg text-warning"></i></Button>
+                                    <Button onClick={()=>handleCart(product)} className='btn btn-light'><i class="fa-solid fa-cart-shopping fa-lg text-warning"></i></Button>
                                     </div>
                                       </Card.Body>
                                     </Card>
